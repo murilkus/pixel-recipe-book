@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f8dce5">
+  <title>Маленькая книга рецептов</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="desktop-sparkles" aria-hidden="true"></div>
+  <main class="app-window">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-icon" aria-hidden="true">♡</div>
+        <div>
+          <p class="eyebrow">MY LITTLE KITCHEN</p>
+          <h1>Книга рецептов</h1>
+        </div>
+      </div>
+      <div class="top-actions">
+        <span class="saved-label"><span class="status-dot"></span> сохранено</span>
+        <button class="icon-button" id="addRecipeTop" aria-label="Добавить рецепт" title="Добавить рецепт">＋</button>
+      </div>
+    </header>
+
+    <section class="welcome">
+      <div>
+        <p class="eyebrow">ТВОЯ КУЛИНАРНАЯ КОЛЛЕКЦИЯ</p>
+        <h2>Что будем готовить?</h2>
+        <p class="welcome-copy">Собирай любимые рецепты в одном уютном месте.</p>
+      </div>
+      <div class="pixel-cake" aria-hidden="true">
+        <span class="cake-candle"></span><span class="cake-top"></span><span class="cake-middle"></span><span class="cake-bottom"></span>
+      </div>
+    </section>
+
+    <section class="toolbar">
+      <label class="search-wrap">
+        <span aria-hidden="true">⌕</span>
+        <input id="searchInput" type="search" placeholder="Найти рецепт..." autocomplete="off">
+      </label>
+      <button class="primary-button" id="addRecipeButton"><span>＋</span> Новый рецепт</button>
+    </section>
+
+    <div class="content-grid">
+      <aside class="sidebar">
+        <p class="section-kicker">МОЯ КНИГА</p>
+        <button class="nav-item active" data-filter="all"><span>▦</span> Все рецепты <b id="allCount">0</b></button>
+        <button class="nav-item" data-filter="favorite"><span>♥</span> Избранное <b id="favoriteCount">0</b></button>
+        <div class="sidebar-note">
+          <span class="note-star">✦</span>
+          <p>Маленькие рецепты, большие радости.</p>
+        </div>
+      </aside>
+
+      <section class="recipe-area">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker" id="listKicker">ТВОИ ЗАПИСИ</p>
+            <h2 id="listTitle">Все рецепты <span class="heading-count" id="visibleCount">0</span></h2>
+          </div>
+          <span class="sort-label">МОЯ КОЛЛЕКЦИЯ</span>
+        </div>
+        <div id="recipeList" class="recipe-list"></div>
+        <div id="emptyState" class="empty-state" hidden>
+          <div class="empty-book">▤</div>
+          <h3>Здесь пока пусто</h3>
+          <p>Добавь первый рецепт — и твоя книга начнёт заполняться.</p>
+          <button class="primary-button" id="emptyAddButton">＋ Добавить рецепт</button>
+        </div>
+      </section>
+    </div>
+
+    <footer class="footer"><span>MADE WITH A LITTLE LOVE</span><span>✿</span><span>ТВОЯ КНИГА, ТВОИ ПРАВИЛА</span></footer>
+  </main>
+
+  <dialog id="recipeDialog" class="dialog">
+    <form id="recipeForm" class="dialog-card">
+      <div class="dialog-header">
+        <div><p class="eyebrow">НОВАЯ ЗАПИСЬ В КНИГЕ</p><h2 id="dialogTitle">Добавить рецепт</h2></div>
+        <button type="button" class="icon-button close-button" id="closeDialog" aria-label="Закрыть">×</button>
+      </div>
+      <label class="field-label">Название рецепта<input id="recipeName" required maxlength="70" placeholder="Например, шоколадное печенье"></label>
+      <div class="two-fields">
+        <label class="field-label">Категория
+          <select id="recipeCategory"><option>Выпечка</option><option>Десерты</option><option>Завтраки</option><option>Основные блюда</option><option>Напитки</option><option>Другое</option></select>
+        </label>
+        <label class="field-label">Время приготовления<input id="recipeTime" placeholder="Например, 35 минут" maxlength="30"></label>
+      </div>
+      <label class="field-label">Короткое описание<textarea id="recipeDescription" rows="2" maxlength="180" placeholder="Почему тебе нравится этот рецепт?"></textarea></label>
+      <div class="ingredients-head"><span class="field-label">Ингредиенты</span><button type="button" class="text-button" id="addIngredient">＋ Добавить строку</button></div>
+      <div id="ingredientEditor" class="ingredient-editor"></div>
+      <label class="field-label">Приготовление<textarea id="recipeSteps" rows="4" placeholder="Опиши шаги приготовления..." required></textarea></label>
+      <div class="dialog-actions"><button type="button" class="secondary-button" id="cancelDialog">Отмена</button><button type="submit" class="primary-button">Сохранить рецепт</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="detailDialog" class="dialog detail-dialog">
+    <div class="dialog-card">
+      <div class="dialog-header">
+        <div><p class="eyebrow" id="detailCategory">РЕЦЕПТ</p><h2 id="detailName"></h2></div>
+        <button type="button" class="icon-button close-button" id="closeDetail" aria-label="Закрыть">×</button>
+      </div>
+      <p id="detailDescription" class="detail-description"></p>
+      <div class="detail-meta"><span id="detailTime"></span><span id="detailBaseServings"></span></div>
+      <section class="scale-panel">
+        <div><p class="section-kicker">ИЗМЕНИТЬ ПОРЦИИ</p><p class="scale-hint">Количество ингредиентов пересчитается автоматически</p></div>
+        <div class="serving-control"><button id="servingMinus" aria-label="Меньше порций">−</button><strong id="servingValue">2</strong><button id="servingPlus" aria-label="Больше порций">＋</button></div>
+      </section>
+      <h3 class="detail-section-title">Ингредиенты <span>♡</span></h3>
+      <ul id="detailIngredients" class="detail-ingredients"></ul>
+      <h3 class="detail-section-title">Приготовление <span>✿</span></h3>
+      <p id="detailSteps" class="detail-steps"></p>
+      <div class="dialog-actions detail-actions">
+        <button class="secondary-button" id="editRecipe">Изменить</button>
+        <button class="secondary-button danger-button" id="deleteRecipe">Удалить</button>
+        <button class="primary-button" id="favoriteRecipe">♡ В избранное</button>
+      </div>
+    </div>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>
